@@ -18,56 +18,37 @@ public class Main {
     public static void main(String[] args) {
 
         SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-
-
         Session session = sessionFactory.openSession();
 
-
         PlanetCrudService planetCrudService = new PlanetCrudService(sessionFactory.createEntityManager());
+        ClientCrudService clientCrudService = new ClientCrudService(sessionFactory.createEntityManager());
 
-
-        // Ticket CRUD service-------------------------------------------
-
-
-        ClientCrudService ccs = new ClientCrudService(sessionFactory.createEntityManager());
-        Client client = ccs.findById(2L);
-
-        System.out.println("OKAY OKAY OKAY");
-
+        Client client = clientCrudService.findById(2L);
         Planet startPlanet = planetCrudService.findById("SAT");
         Planet endPlanet = planetCrudService.findById("TAT");
 
-        System.out.println("OKAY OKAY OKAY");
-
-
-
-
-
-        System.out.println("OKAY OKAY OKAY");
         Ticket ticket = new Ticket();
         ticket.setClient(client);
         ticket.setFromPlanet(startPlanet);
         ticket.setToPlanet(endPlanet);
         ticket.setCreatedAt(LocalDateTime.of(2024, 4, 12, 15, 30));
 
-
         TicketCrudService ticketCrudService = new TicketCrudService(sessionFactory.createEntityManager());
-        System.out.println("OKAY OKAY OKAY");
+
         ticketCrudService.save(ticket);
 
-        System.out.println("OKAY OKAY OKAY");
-
-
-        System.out.println("OKAY OKAY OKAY");
         List<Ticket> tickets = ticketCrudService.findAll();
 
         System.out.println(tickets);
         System.out.println("OKAY OKAY OKAY");
 
+        Ticket ticketToDelete = ticketCrudService.findById(17L);
+        System.out.println(ticketToDelete);
+
+        ticketCrudService.delete(ticketToDelete);
 
         session.close();
         sessionFactory.close();
-
 
 
     }

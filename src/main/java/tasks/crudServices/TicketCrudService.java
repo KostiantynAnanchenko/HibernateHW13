@@ -28,20 +28,6 @@ public class TicketCrudService {
         }
     }
 
-    public void update(Ticket ticket) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            entityManager.merge(ticket);
-            transaction.commit();
-        } catch (Exception ex) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            ex.printStackTrace();
-        }
-    }
-
     public void delete(Ticket ticket) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -56,8 +42,8 @@ public class TicketCrudService {
         }
     }
 
-    public Optional<Ticket> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Ticket.class, id));
+    public Ticket findById(Long id) {
+        return entityManager.find(Ticket.class, id);
     }
 
     public List<Ticket> findAll() {
